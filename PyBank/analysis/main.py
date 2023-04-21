@@ -3,37 +3,51 @@ import csv
 path = '../Resources/budget_data.csv'
 
 total_months = 0
-total_profit = 0
-profit_changes = []
-previous_profit = 0
+total_profit_loss = 0
+previous_month_profit_loss = 0
+changes_in_profit_loss = []
 greatest_increase = ['', -float('inf')]
 greatest_decrease = ['', float('inf')]
 
-with open(path) as csvfile:
-    csvreader = csv.reader(csvfile, delimiter = ',')
-    header = next(csvreader)
+with open(path, newline='') as csvfile:
+    csvreader = csv.reader(csvfile, delimiter=',')
+
+
+    next(csvreader)
+
     for row in csvreader:
-
         total_months += 1
-        total_profit += int(row[1])
-        profit_change = int(row[1]) - previous_profit
-        profit_changes.append(profit_change)
-        previous_profit = int(row[1])
 
-        if profit_change > greatest_increase[1]:
+        total_profit_loss += int(row[1])
+
+        change_in_profit_loss = int(row[1]) - previous_month_profit_loss
+
+        changes_in_profit_loss.append(change_in_profit_loss)
+
+        if change_in_profit_loss > greatest_increase[1]:
             greatest_increase[0] = row[0]
-            greatest_increase[1] = profit_change
-
-        if profit_change < greatest_decrease[1]:
+            greatest_increase[1] = change_in_profit_loss
+        elif change_in_profit_loss < greatest_decrease[1]:
             greatest_decrease[0] = row[0]
-            greatest_decrease[1] = profit_change
+            greatest_decrease[1] = change_in_profit_loss
 
-average_change = sum(profit_changes[1:]) / len(profit_changes[1:])
+        previous_month_profit_loss = int(row[1])
 
-print('Financial Analysis')
-print('----------------------------')
-print(f'Total Months: {total_months}')
-print(f'Total: ${total_profit}')
-print(f'Average Change: ${average_change:.2f}')
-print(f'Greatest Increase in Profits: {greatest_increase[0]} (${greatest_increase[1]})')
-print(f'Greatest Decrease in Profits: {greatest_decrease[0]} (${greatest_decrease[1]})')
+average_change = sum(changes_in_profit_loss[1:]) / len(changes_in_profit_loss[1:])
+
+print("Financial Analysis")
+print("----------------------------")
+print(f"Total Months: {total_months}")
+print(f"Total: ${total_profit_loss}")
+print(f"Average Change: ${round(average_change, 2)}")
+print(f"Greatest Increase in Profits: {greatest_increase[0]} (${greatest_increase[1]})")
+print(f"Greatest Decrease in Profits: {greatest_decrease[0]} (${greatest_decrease[1]})")
+
+with open("results.txt", "w") as text_file:
+    text_file.write("Financial Analysis\n")
+    text_file.write("----------------------------\n")
+    text_file.write(f"Total Months: {total_months}\n")
+    text_file.write(f"Total: ${total_profit_loss}\n")
+    text_file.write(f"Average Change: ${round(average_change, 2)}\n")
+    text_file.write(f"Greatest Increase in Profits: {greatest_increase[0]} (${greatest_increase[1]})\n")
+    text_file.write(f"Greatest Decrease in Profits: {greatest_decrease[0]} (${greatest_decrease[1]})\n")
