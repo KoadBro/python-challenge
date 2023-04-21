@@ -24,14 +24,14 @@ with open(csvpath, newline="") as csvfile:
 output_file = open("results.txt", "w")
 
 output_file.write("Results\n")
-output_file.write("-------------------------\n")
+output_file.write("------------------------------\n")
 print("Election Results")
-print("-------------------------")
+print("--------------------------------")
 
 output_file.write(f"Total Votes: {total_votes}\n")
 print(f"Total Votes: {total_votes}")
-output_file.write("-------------------------\n")
-print("-------------------------")
+output_file.write("-----------------------\n")
+print("----------------------------")
 
 
 for candidate, votes in candidates.items():
@@ -43,12 +43,12 @@ for candidate, votes in candidates.items():
         winner = candidate
         winner_votes = votes
 
-output_file.write("-------------------------\n")
-print("-------------------------")
+output_file.write("----------------------\n")
+print("---------------------------")
 output_file.write(f"Winner: {winner}\n")
 print(f"Winner: {winner}")
-output_file.write("-------------------------\n")
-print("-------------------------")
+output_file.write("----------------------------\n")
+print("-----------------------")
 
 
 output_file.close()
